@@ -9,8 +9,7 @@ function [NormI1, NormP1, NormI2, NormP2, NormI3, NormP3] = Import_Pupils(subjec
 
 %InputFile = 'V1_B3_27.xls';    % Input data file from Gazetracker (must be exported from Gazetracker as .xls)
 for block = 1:3
-    version
-    subject
+    %constructs the string for the appropriate file name
     InputFile = ['V' num2str(version) '_B' num2str(block) '_' num2str(subject) '.xls']
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -62,63 +61,56 @@ end
 
 DataAll = zeros(1000,nwkshts*2);    % Each slide has 2 columns - 1 for pupil dia 1 for time
 
-for i = 1:nwkshts        
-    
-    if findstr(InputFile, 'V1_B1') 
+
+for i = 1:nwkshts
+    %this switch collects pupil data from spreadsheets and stores them
+    %in the Raw matrix
+    switch version
         
-        wks = char(Worksheets1(i));     % Identify current worksheet
-        Raw = xlsread(InputFile,wks);   % Read .xls file
-        Data = 'V1_B1';
+        case 1
+            switch block
+                case 1
+                    wks = char(Worksheets1(i));     % Identify current worksheet
+                    Raw = xlsread(InputFile,wks);   % Read .xls file
+                case 2
+                    wks = char(Worksheets2(i));       % Identify current worksheet
+                    Raw = xlsread(InputFile,wks);     % Read .xls file
+                case 3
+                    wks = char(Worksheets3(i));       % Identify current worksheet
+                    Raw = xlsread(InputFile,wks);     % Read .xls file
+            end
+         
+        case 2
+            switch block
+                case 1
+                    wks = char(Worksheets4(i));     % Identify current worksheet
+                    Raw = xlsread(InputFile,wks);   % Read .xls file
+                case 2
+                    wks = char(Worksheets5(i));       % Identify current worksheet
+                    Raw = xlsread(InputFile,wks);     % Read .xls file
+                case 3
+                    wks = char(Worksheets6(i));       % Identify current worksheet
+                    Raw = xlsread(InputFile,wks);     % Read .xls file
+            end
      
-    elseif findstr(InputFile, 'V1_B2')
-        
-        wks = char(Worksheets2(i));       % Identify current worksheet
-        Raw = xlsread(InputFile,wks);     % Read .xls file
-        Data = 'V1_B2';
-       
-    elseif findstr(InputFile, 'V1_B3')
-        
-        wks = char(Worksheets3(i));       % Identify current worksheet
-        Raw = xlsread(InputFile,wks);     % Read .xls file
-        Data = 'V1_B3';
-        
-    elseif findstr(InputFile, 'V2_B1') 
-        
-        wks = char(Worksheets4(i));     % Identify current worksheet
-        Raw = xlsread(InputFile,wks);   % Read .xls file
-        Data = 'V2_B1';
-     
-    elseif findstr(InputFile, 'V2_B2')
-        
-        wks = char(Worksheets5(i));       % Identify current worksheet
-        Raw = xlsread(InputFile,wks);     % Read .xls file
-        Data = 'V2_B2';
-       
-    elseif findstr(InputFile, 'V2_B3')
-        
-        wks = char(Worksheets6(i));       % Identify current worksheet
-        Raw = xlsread(InputFile,wks);     % Read .xls file
-        Data = 'V2_B3';
-        
-    elseif findstr(InputFile, 'V3_B1') 
-        
-        wks = char(Worksheets7(i));     % Identify current worksheet
-        Raw = xlsread(InputFile,wks);   % Read .xls file
-        Data = 'V3_B1';
-     
-    elseif findstr(InputFile, 'V3_B2')
-        
-        wks = char(Worksheets8(i));       % Identify current worksheet
-        Raw = xlsread(InputFile,wks);     % Read .xls file
-        Data = 'V3_B2';
-       
-    elseif findstr(InputFile, 'V3_B3')
-        
-        wks = char(Worksheets9(i));       % Identify current worksheet
-        Raw = xlsread(InputFile,wks);     % Read .xls file
-        Data = 'V3_B3';
-        
+        case 3
+            switch block
+                case 1
+                    wks = char(Worksheets7(i));     % Identify current worksheet
+                    Raw = xlsread(InputFile,wks);   % Read .xls file
+                case 2
+                    wks = char(Worksheets8(i));       % Identify current worksheet
+                    Raw = xlsread(InputFile,wks);     % Read .xls file
+                case 3
+                    wks = char(Worksheets9(i));       % Identify current worksheet
+                    Raw = xlsread(InputFile,wks);     % Read .xls file
+            end
+                
+        otherwise warning('unexpected version number')
     end
+    
+        
+   
      
      sz = size(Raw,1);              % Size of data for current slide
      
@@ -283,19 +275,22 @@ else if block == 2
         end
     end
 end
-% NormI1
-% NormP1
-% NormI2
-% NormP2
-% NormI3
-% NormP3
 end
-xlswrite('Pupil Data Older Adults.xlsx',NormI1,2,'B3:R16')
-xlswrite('Pupil Data Older Adults.xlsx',NormP1,2,'T3:AJ16')
-xlswrite('Pupil Data Older Adults.xlsx',NormI2,2,'B21:R34')
-xlswrite('Pupil Data Older Adults.xlsx',NormP1,2,'T21:AJ34')
-xlswrite('Pupil Data Older Adults.xlsx',NormI3,2,'B39:R52')
-xlswrite('Pupil Data Older Adults.xlsx',NormP3,2,'T39:AJ52')
+
+sheetName = ['OS' num2str(subject)] %constructs the string that specifies the name of the destination spreadsheet
+
+%writes the normalized response to improbable sentences  for the 1st block into a predfined spreadsheet
+xlswrite('Pupil Data Older Adults.xlsx',NormI1,sheetName,'B3:R16')
+%writes the normalized response to improbable sentences  for the 1st block into a predfined spreadsheet
+xlswrite('Pupil Data Older Adults.xlsx',NormP1,sheetName,'T3:AJ16')
+%writes the normalized response to improbable sentences  for the 1st block into a predfined spreadsheet
+xlswrite('Pupil Data Older Adults.xlsx',NormI2,sheetName,'B21:R34')
+%writes the normalized response to improbable sentences  for the 1st block into a predfined spreadsheet
+xlswrite('Pupil Data Older Adults.xlsx',NormP1,sheetName,'T21:AJ34')
+%writes the normalized response to improbable sentences  for the 1st block into a predfined spreadsheet
+xlswrite('Pupil Data Older Adults.xlsx',NormI3,sheetName,'B39:R52')
+%writes the normalized response to improbable sentences  for the 1st block into a predfined spreadsheet
+xlswrite('Pupil Data Older Adults.xlsx',NormP3,sheetName,'T39:AJ52')
+
 %NormMeanMaxProb = mean(NormP(:,length(Prob)))
 %NormMeanMaxImpr = mean(NormI(:,length(Impr)))
-
