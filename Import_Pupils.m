@@ -181,7 +181,7 @@ for block = 1:3
          %%%%% This corrects for camera thinking reflection is pupil %%%%%
 
          R = Raw(:,1);      % Select all pupil size data
-         R(R<40) = NaN;     % Remove data from reflections (not actual pupil size)
+         R(R<20) = NaN;     % Remove data from reflections (not actual pupil size)
          Raw(:,1) = R;      % Return corrected data to Raw
 
          %%%%%
@@ -200,9 +200,11 @@ for block = 1:3
 
         Target(i) = find(Raw(:,3)==min(Raw(:,3)));  % Find target word onset point
 
-       if block == 1 && i == 1 || i == 2
-
-           Range(i,1) = nanmean(Raw(Target(i):end,1));  % Means for black and white screens
+       if block == 1 && i == 1 
+           
+           Range(i)= min(Raw(1:end,1))
+       elseif block == 1 && i == 2
+           Range(i)= max(Raw(1:end,1))
 
        else  
 
@@ -271,23 +273,39 @@ for block = 1:3
 
     for c = 1:size(Prob,1)
         for v = 2:length(Prob)
-            NormP(c,v-1) = Prob(c,v)/Prob(c,1);   
+            DeltaP(c,v-1) = Prob(c,v) - Prob(c,1);   
         end
 
-        NormP(c,length(Prob)) = PeakP(c)/Prob(c,1);  % Peak pupil size
-        NormP(c,length(Prob)+1) = LPeakP(c)*1000;         % Latency to peak pupil size from target word onset
+        DeltaP(c,length(Prob)) = PeakP(c )- Prob(c,1);  % Peak pupil size
     end
 
  
     for C = 1:size(Impr,1)
         for V = 2:length(Impr)
-            NormI(C,V-1) = Impr(C,V)/Impr(C,1); 
+            DeltaI(C,V-1) = Impr(C,V) - Impr(C,1); 
         end 
 
-        NormI(C,length(Impr)) = PeakI(C)/Impr(C,1);  % Peak pupil size
-        NormI(C,length(Impr)+1) = LPeakI(C)*1000;         % Latency to peak pupil size from target word onset
+        DeltaI(C,length(Impr)) = PeakI(C) - Impr(C,1);  % Peak pupil size
     end
    
+     for c = 1:size(DeltaP,1)
+        for v = 2:length(DeltaP)
+            NormP(c,v) = (DeltaP(c,v)/(Range(2)-Range(1)))*100;   
+        end
+
+        NormP(c,length(DeltaP)+1) = LPeakP(c )*1000;  % Peak pupil size
+     end
+    
+     for c = 1:size(DeltaI,1)
+        for v = 2:length(DeltaI)
+            NormI(c,v) = (DeltaI(c,v)/(Range(2)-Range(1)))*100;   
+        end
+
+        NormI(c,length(DeltaI)+1) = LPeakI(c )*1000;  % Peak pupil size
+    end
+
+ 
+    
     %collects normalized and improbable pupil data for writing to excel
     %later
     switch block 
