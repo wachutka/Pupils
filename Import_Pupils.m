@@ -314,11 +314,13 @@ for block = 1:3
             NormP1(1:14,1:17) = NaN;
             NormI1(1:size(NormI,1),1:size(NormI,2))= NormI;
             NormP1(1:size(NormP,1),1:size(NormP,2)) = NormP;
+            clear NormI NormP Impr Prob DeltaI DeltaP
         case 2
             NormI2(1:14,1:17) = NaN;
             NormP2(1:14,1:17) = NaN;
             NormI2(1:size(NormI,1),1:size(NormI,2)) = NormI;
-            NormP2(1:size(NormP,1),1:size(NormP,2)) = NormP;   
+            NormP2(1:size(NormP,1),1:size(NormP,2)) = NormP;
+            clear NormI NormP Impr Prob DeltaI DeltaP
         case 3
             NormI3(1:14,1:17) = NaN;
             NormP3(1:14,1:17) = NaN;
