@@ -339,7 +339,7 @@ xlswrite('Pupil Data Older Adults.xlsx',NormP1,sheetName,'T3:AJ16')
 %writes the normalized response to improbable sentences  for the 2nd block into a predfined spreadsheet
 xlswrite('Pupil Data Older Adults.xlsx',NormI2,sheetName,'B21:R34')
 %writes the normalized response to probable sentences  for the 2nd block into a predfined spreadsheet
-xlswrite('Pupil Data Older Adults.xlsx',NormP1,sheetName,'T21:AJ34')
+xlswrite('Pupil Data Older Adults.xlsx',NormP2,sheetName,'T21:AJ34')
 %writes the normalized response to improbable sentences  for the 3rd block into a predfined spreadsheet
 xlswrite('Pupil Data Older Adults.xlsx',NormI3,sheetName,'B39:R52')
 %writes the normalized response to probable sentences  for the 3rd block into a predfined spreadsheet
